@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=5432
+      - POSTGRES_DB=testBNB
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  app:
+    depends_on:
+     - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8886:8886"
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=5432
+      - POSTGRES_DB=testBNB
+      - POSTGRES_PORT=5432
+      - APIPort=:8886
